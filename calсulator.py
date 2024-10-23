@@ -1,5 +1,4 @@
 cmnd = ''
-x = 0
 valid_answers = ['1', '2', '3', '4']
 action = 0
 def addition(a,b):
