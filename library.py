@@ -35,13 +35,12 @@ def book_append():
       }
    add_book(new_book)
    return ''
-def search_book_by_author():
-   key = input("Поиск: ").lower()
+def search_book_by_author(s):
    books_found = []
    for book in books_pack:
-      if key in book.get("author").lower() or \
-         key in book.get("title").lower() or \
-         key in str(book.get("year")).lower():
+      if search_string in book.get("author").lower() or \
+         search_string in book.get("title").lower() or \
+         search_string in str(book.get("year")).lower():
          books_found.append(book)
    return books_found
 def search_book_by_title():
@@ -107,7 +106,8 @@ while action != 5:
          print('нажмите Enter, чтобы продолжить...')
          input()
       case 2:
-         relevant_books = search_book_by_author()
+         search_string = input("Поиск: ").lower()
+         relevant_books = search_book_by_author(search_string)
          print_books(relevant_books)
          print('нажмите Enter, чтобы продолжить...')
          input()
