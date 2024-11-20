@@ -1,105 +1,49 @@
-# string = 'Alex'
-# number = 123
-# float_ = 12.4
-# bool_ = True
+from modules.functions import my_func
+from datetime import datetime as dt
 
-# list_ = []
-# list2_ = list()
-# tuple_ = (1, )
-# tuple2 = tuple()
-# dict_ = {
-#     'key': {}
-# }
-# dict2 = dict()
+import requests
 
-# aaa = ['123', 12, 12, '123']
-# set_ = set(aaa)
-# set_.add('lesson')
-# print(set_)
-
-# frset_ = frozenset(aaa)
+def main_modules():
+    r = requests.get('https://catfact.ninja/fact')
+    print(r.json())
 
 
-# DICT
-car = {
-    'color': 'blue',
-    'people': 5,
-    'wheels': [
-        {
-            'radius': 16,
-            'year': 2024
-        },
-        {
-            'radius': 16,
-            'year': 2022
-        }
-    ],
-    'doors': {
-        'left': 1,
-    }
-}
-
-# print(car[True])
+def division(a, b):
+    return round(a / int(b), 2)
 
 
-# Арифметика в python
+def main_except():
+    try:
+        print(division(10, 0))
+    except (ZeroDivisionError, ValueError):
+        print('Одна из 2х ошибок')
+    except ZeroDivisionError as e:
+        print('На ноль деллить нельзя')
+    except ValueError as e:
+        print('Дурак, только числа!')
+    except:
+        print('Неизвестная ошибка')
+    else:
+        print('Если нет ошибки')
+    finally:
+        print('Закончили проверку')
 
-# + - * / // % **
-
-# string = 5 ** 2
-
-# print(string)
+    print('Работаем дальше')
 
 
 
-# Условные конструкции
-# == | != | < | > | <= | >= | and | or | ^
+class OnlyOneException(Exception):
+    pass
 
+def do_thing(param):
+    if param != 1:
+        raise OnlyOneException
 
-# print('Check car color')
-# if car['people']:
-#     print('My capor is red')
-# elif car['people'] != 5:
-#     print('Nice size')
-# else:
-#     print('Missed color')
-    
-# term = input("Input car type: ")
+def main():
+    try:
+        do_thing(2)
+    except OnlyOneException:
+        print('Только единицы!')
 
-# match term:
-#     case 'polo':
-#          print('Love')
-#     case 'tuareg':
-#          print('shit')
-#     case 'cayen':
-#          print('porsh')
-#     case _:
-#         print('car')
-
-
-# Цыклы
-
-# cars = ['porsh', 'bmw', 'kia']
-
-# for car in cars:
-#     print(f'My best car is { car }')
-#     if (car == 'bmw'):
-#         break
-
-# count = 0
-# while count <= 5:
-#     print(count)
-#     count += 1
-
-# Задача
-# 1. Калькулятор cmd
-# 2* Графический интерфейс
-
-def foo():
-    print(123)
-
-
-print('0 - Выход\n1 - ...')
-answer = None
-while answer != 0:
-    answer = int(input("Команда: "))
+if __name__ == '__main__':
+   main()

@@ -119,7 +119,7 @@ while action != 5:
    elif cmnd == '5':
       action = 5
    else:
-      input(' \nНесуществующая команда, нажмите Enter, чтобы продолжить...')
+      input(wrong_command_answer)
       action = 0
 
    match action:
