@@ -27,6 +27,6 @@ books_pack = [
         "title": "Наказание",
         "author": "Достоевский",
         "year": 1866,
-        "status": True
+        "status": False
     },
 ]

@@ -1,93 +1,24 @@
 from books import books_pack
-import pprint
+from functions_for_library import get_checked_base_of_books
+from functions_for_library import add_book
+from functions_for_library import new_book_params_fill
+from functions_for_library import search_book
+from functions_for_library import print_books
+from functions_for_library import choose_books_for_delition
+from functions_for_library import deletion
+
 valid_answers = ['1', '2', '3', '4']
 cmnd = 0
 action = 0
-list_of_commands = "Выберите действие: \n1. Показать все книги\n2. Найти книгу по автору\n3. Найти книгу по названию\n4. Добавить книгу\n5. Выход"
+list_of_commands = "Выберите действие: \n1. Показать все книги\n2. Найти книгу\n3. Добавить книгу\n4. Удалить книгу\n5. Выход"
+chosing_commands = 'Выберите действие: \n1. Удалить книги\n2. Отмена\n'
+delimiter = "-" * 30
+checked_base = []
+wrong_command_answer = (' \nНесуществующая команда, нажмите Enter, чтобы продолжить...')
+no_intersections_answer = ('Нет совпадений')
+go_further_answer = ('нажмите Enter, чтобы продолжить...')
 
-def exhibition():
-   print("-" * 30)
-   for book, books_number in zip(books_pack, range(1, len(books_pack)+1)):
-      if book["status"]:
-         
-         print(books_number)
-         print_book(book)
-   return ''
-def add_book(book):
-    global books_pack
-    books_pack.append(book)
-def book_append():
-   print("Заполните характеристики новой книги")
-   new_books_name = input("Название:")
-   new_books_author = input("Автор:")
-   while True:
-        new_books_year = input("Год выпуска: ")
-        if new_books_year.isdigit():
-            new_books_year = int(new_books_year)
-            break
-        else:
-            print("Ошибка: Введите числовое значение для года.")
-   new_book = {
-      "title": new_books_name,
-      "author": new_books_author,
-      "year": new_books_year,
-      "status": True
-      }
-   add_book(new_book)
-   return ''
-def search_book_by_author(s):
-   books_found = []
-   for book in books_pack:
-      if search_string in book.get("author").lower() or \
-         search_string in book.get("title").lower() or \
-         search_string in str(book.get("year")).lower():
-         books_found.append(book)
-   return books_found
-def search_book_by_title():
-   key_title = input("Введите название книги: ")
-   counter = 1
-   for book, books_number in zip(books_pack, range(1, len(books_pack)+1)):
-      if book.get("title") == key_title:
-         print(counter)
-         print(f"Название: {book['title']}")
-         print(f"Автор: {book['author']}")
-         print(f"Год издания: {book['year']}")
-         print("-" * 30)
-         counter += 1
-   if counter == 1:
-      print("\nКниг с указанным названием нет в библиотеке\n")
-   return ''
-def deleting():
-   name_of_the_book = input("Введите название книги: ")
-   counter = 1
-   global books_pack
-   user_answer = ''
-   for book in books_pack:
-      if book.get("title") == name_of_the_book:
-         print(F"Вы хотите удалить эту книгу?\n{'-' * 30}")
-         print(f"Название: {book['title']}")
-         key_name = book['title']
-         print(f"Автор: {book['author']}")
-         print(f"Год издания: {book['year']}")
-         print("-" * 30)
-         counter += 2
-         break
-   if counter == 1:
-      print('Такой книги нет в библиотеке')
-   else:
-      user_answer = input('1 - Да\n2 - Нет\n')
-   if user_answer == 1:
-      books_pack = [book for book in books_pack if book.get("title") != key_name]
-      input("Книга удалена!")
-   return ''
 
-def print_books(books):
-   for i, book in enumerate(books):
-      print(i+1)
-      print(f"Название: {book['title']}")
-      print(f"Автор: {book['author']}")
-      print(f"Год издания: {book['year']}")
-      print("-" * 30)
 
 while action != 5:
    print(list_of_commands)
@@ -97,28 +28,41 @@ while action != 5:
    elif cmnd == '5':
       action = 5
    else:
-      input(' \nНесуществующая команда, нажмите Enter, чтобы продолжить...')
+      input(wrong_command_answer)
       action = 0
 
    match action:
       case 1:
-         print(exhibition())
-         print('нажмите Enter, чтобы продолжить...')
-         input()
+         print(delimiter)
+         print_books(get_checked_base_of_books(books_pack))
+         input(go_further_answer)
       case 2:
-         search_string = input("Поиск: ").lower()
-         relevant_books = search_book_by_author(search_string)
-         print_books(relevant_books)
-         print('нажмите Enter, чтобы продолжить...')
-         input()
+         search_string = input("Поиск: ")
+         relevant_books = search_book(search_string)
+         if relevant_books == []:
+            print(no_intersections_answer)
+         else:
+            print_books(relevant_books)
+         input(go_further_answer)
       case 3:
-         search_book_by_title()
-         print('нажмите Enter, чтобы продолжить...')
-         input()
+         new_book = new_book_params_fill()
+         add_book(new_book)
+         input(go_further_answer)
       case 4:
-         book_append()
-         print('нажмите Enter, чтобы продолжить...')
-         input()
+         search_string = input("Какую книгу удаляем: ")
+         found_books = search_book(search_string)
+         if len(found_books) >= 1:
+            print_books(found_books)
+            user_choice = choose_books_for_delition()
+            if user_choice == 1:
+               deletion(found_books)
+               print("книги удалены")
+            elif user_choice == 2:
+               pass
+         else:
+            print(no_intersections_answer)
+
+         input(go_further_answer)
       case _: pass
 
 
@@ -126,109 +70,3 @@ while action != 5:
 
 
 
-
-
-# def exhibition():
-#    for book, books_number in zip(books_pack, range(1, len(books_pack)+1)):
-#       if book["status"]:
-#          print(books_number)
-#          print(f"Название: {book['title']}")
-#          print(f"Автор: {book['author']}")
-#          print(f"Год издания: {book['year']}")
-#          print("-" * 30)
-#    return ''
-# def add_book(book):
-#     global books_pack
-#     books_pack.append(book)
-# def book_append():
-#    print("Заполните характеристики новой книги")
-#    new_books_name = input("Название:")
-#    new_books_author = input("Автор:")
-#    while True:
-#         new_books_year = input("Год выпуска: ")
-#         if new_books_year.isdigit():
-#             new_books_year = int(new_books_year)
-#             break
-#         else:
-#             print("Ошибка: Введите числовое значение для года.")
-#    new_book = {
-#       "title": new_books_name,
-#       "author": new_books_author,
-#       "year": new_books_year,
-#       "status": True
-#       }
-#    add_book(new_book)
-#    return ''
-# def search_book_by_author():
-#    key_author = input("Введите автора: ")
-#    counter = 1
-#    for book, books_number in zip(books_pack, range(1, len(books_pack)+1)):
-#       if book.get("author") == key_author:
-#          print(counter)
-#          print(f"Название: {book['title']}")
-#          print(f"Автор: {book['author']}")
-#          print(f"Год издания: {book['year']}")
-#          print("-" * 30)
-#          counter += 1
-#    if counter == 1:
-#       print("Указаного автора нет в библиотеке\n")
-#    input("\nДля продолжения нажмите Enter...")
-#    return ''
-# def search_book_by_title():
-#    key_title = input("Введите название книги: ")
-#    counter = 1
-#    for book, books_number in zip(books_pack, range(1, len(books_pack)+1)):
-#       if book.get("title") == key_title:
-#          print(counter)
-#          print(f"Название: {book['title']}")
-#          print(f"Автор: {book['author']}")
-#          print(f"Год издания: {book['year']}")
-#          print("-" * 30)
-#          counter += 1
-#    if counter == 1:
-#       print("\nКниг с указанным названием нет в библиотеке\n")
-#    input("Для продолжения нажмите Enter...")
-#    return ''
-# def deleting():
-#    name_of_the_book = input("Введите название книги: ")
-#    counter = 1
-#    global books_pack
-#    user_answer = ''
-#    for book in books_pack:
-#       if book.get("title") == name_of_the_book:
-#          print(F"Вы хотите удалить эту книгу?\n{'-' * 30}")
-#          print(f"Название: {book['title']}")
-#          key_name = book['title']
-#          print(f"Автор: {book['author']}")
-#          print(f"Год издания: {book['year']}")
-#          print("-" * 30)
-#          counter += 2
-#          break
-#    if counter == 1:
-#       print('Такой книги нет в библиотеке')
-#    else:
-#       user_answer = input('1 - Да\n2 - Нет\n')
-#    if user_answer == 1:
-#       books_pack = [book for book in books_pack if book.get("title") != key_name]
-#       input("Книга удалена!")
-#    return ''
-
-
-# print(deleting())
-
-# print(search_book_by_title())
-
-# print(exhibition())
-
-
-# def status_change():
-
-# 1.	Функция для добавления книги: done
-# 2.	Функция для удаления книги:
-# 3.	Функция для поиска книг по автору: done
-# 4.	Функция для поиска книги по названию: done
-# 5.	Функция для изменения статуса книги:
-# 6.	Функция для отображения всех книг: done
-# 7.	Функция для запуска программы:
-
-# print(book_append())
