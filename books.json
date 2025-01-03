@@ -1,0 +1,32 @@
+[
+    {
+        "title": "Война и Мир",
+        "author": "Толстой",
+        "year": 1867,
+        "status": true
+    },
+    {
+        "title": "Преступление и наказание",
+        "author": "Достоевский",
+        "year": 1866,
+        "status": true
+    },
+    {
+        "title": "Идиот",
+        "author": "Достоевский",
+        "year": 1821,
+        "status": true
+    },
+    {
+        "title": "Преступление",
+        "author": "Достоевский",
+        "year": 1866,
+        "status": true
+    },
+    {
+        "title": "Наказание",
+        "author": "Достоевский",
+        "year": 1866,
+        "status": true
+    }
+]
